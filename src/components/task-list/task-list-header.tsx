@@ -27,7 +27,7 @@ export const TaskListHeaderDefault: React.FC<{
             minWidth: rowWidth,
           }}
         >
-          &nbsp;Name
+          &nbsp;Nom
         </div>
         <div
           className={styles.ganttTable_HeaderSeparator}
@@ -42,7 +42,7 @@ export const TaskListHeaderDefault: React.FC<{
             minWidth: rowWidth,
           }}
         >
-          &nbsp;From
+          &nbsp;Début
         </div>
         <div
           className={styles.ganttTable_HeaderSeparator}
@@ -57,7 +57,7 @@ export const TaskListHeaderDefault: React.FC<{
             minWidth: rowWidth,
           }}
         >
-          &nbsp;To
+          &nbsp;Fin
         </div>
       </div>
     </div>
