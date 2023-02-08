@@ -1,7 +1,7 @@
 {
-  "name": "react-gantt",
-  "version": "0.1.0",
-  "private": true,
+  "name": "ckt-react-gantt",
+  "version": "0.0.1",
+  "description": "interactive gantt in react",
   "dependencies": {
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -35,5 +35,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugoschellinger/react-gantt.git"
+  },
+  "author": "hugoslr <hugo.schellinger@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hugoschellinger/react-gantt/issues"
+  },
+  "homepage": "https://github.com/hugoschellinger/react-gantt#readme"
 }
