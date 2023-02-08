@@ -2,10 +2,10 @@
   "name": "@c-koya-tech/ckt-react-gantt",
   "description": "Le gantt react réutilisable et personnalisable de C-koya Tech",
   "author": "Hugo SCHELLINGER <hugo.schellinger@c-koya.tech",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "private": false,
-  "main": "build/index.html",
-  "module": "build/index.html",
+  "main": "dist/index.html",
+  "module": "dist/index.html",
   "files": [
     "dist",
     "README.md"
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "babel src/lib --out-dir dist --copy-files",
+    "build": "babel --out-dir dist --copy-files",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
