@@ -37,15 +37,16 @@ export default function Gantt(props: GanttProps): JSX.Element {
     let tasksArray: ITask[] = [];
 
     props.tasks.forEach((parentTask) => {
-      tasksArray.push(verifyTypeTask(parentTask) as Task);
+
       if (parentTask.tasks !== undefined && parentTask.tasks.length) {
         if (props.configureFromTaskChildren) {
           parentTask = configureFromChildren(parentTask);
         }
         parentTask.tasks!.map((task, index) =>
-          flatTaskChildren(task, index, parentTask, tasksArray)
+        flatTaskChildren(task, index, parentTask, tasksArray)
         );
       }
+      tasksArray.push(verifyTypeTask(parentTask) as Task);
     });
 
     return tasksArray;
@@ -56,25 +57,33 @@ export default function Gantt(props: GanttProps): JSX.Element {
     let bestEndDate: Date | null = null;
     let averageProgress = 0;
 
-    task.tasks!.forEach((t) => {
-      if (t.tasks !== undefined && t.tasks.length) t = configureFromChildren(t);
-      if (
-        bestStartDate == null ||
-        bestStartDate.getDate() > t.start.getDate()
-      ) {
-        bestStartDate = t.start;
-      }
-      if (bestEndDate == null || bestEndDate.getDate() < t.end.getDate()) {
-        bestEndDate = t.end;
-      }
-      averageProgress += t.progress;
-    });
+    if(task.tasks!==undefined && task.tasks.length){
+      task.tasks!.forEach((t) => {
+        if (t.tasks !== undefined && t.tasks.length) t = configureFromChildren(t);
+        if (
+          bestStartDate == null ||
+          bestStartDate > t.start
+        ) {
+          bestStartDate = t.start;
+        }
+        if (bestEndDate == null || bestEndDate < t.end) {
+          bestEndDate = t.end;
+        }
+        if(t.type!=="milestone"){
+          averageProgress += t.progress;
+        }
+      });
+    }else{
+      bestStartDate = task.start;
+      bestEndDate = task.end;
+      averageProgress = task.progress ?? 0;
+  }
 
     return {
       ...task,
       start: bestStartDate!,
       end: bestEndDate!,
-      progress: parseInt((averageProgress / task.tasks!.length).toFixed(0)),
+      progress: parseInt((averageProgress / task.tasks!.filter(t => t.type!=="milestone").length).toFixed(0)),
     };
   }
 
@@ -84,15 +93,15 @@ export default function Gantt(props: GanttProps): JSX.Element {
     parentTask: ITask,
     tasksArray: Task[]
   ): void {
+    if (props.configureFromTaskChildren && (task.tasks !== undefined && task.tasks.length)) {
+      task = configureFromChildren(task);
+    }
     tasksArray.push({
       ...verifyTypeTask(task),
       project: parentTask.id,
-      dependencies: [(index + 1).toString()],
+      dependencies: task.dependencies ?? [(index+1).toString()],
     } as Task);
     if (task.tasks !== undefined && task.tasks.length) {
-      if (props.configureFromTaskChildren) {
-        task = configureFromChildren(task);
-      }
       task.tasks!.forEach((t, i) => {
         flatTaskChildren(t, i, task, tasksArray);
       });
@@ -119,6 +128,7 @@ export default function Gantt(props: GanttProps): JSX.Element {
         {...props}
         tasks={castITasksToTasks()}
         onExpanderClick={onExpanderClick}
+        onDateChange={()=>{}}
       />
     ),
     [onExpanderClick]

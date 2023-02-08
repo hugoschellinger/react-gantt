@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "./App.css";
 import Gantt from "./components/gantt/gantt";
 import { GanttApp } from "./components/gantt/ganttApp";
@@ -11,7 +10,6 @@ function App() {
         viewMode={ViewMode.Week}
         locale="fr-FR"
         configureFromTaskChildren={true}
-        onDateChange={() => {}}
         tasks={[
           {
             id: "15",
@@ -34,17 +32,26 @@ function App() {
                     id: "2",
                     type: "task",
                     name: "Étape 2",
-                    progress: 0,
-                    start: new Date("2022-12-29"),
+                    progress: 50,
+                    start: new Date("2022-11-30"),
                     end: new Date("2023-02-05"),
                   },
                   {
                     id: "3",
                     type: "milestone",
                     name: "Livraison",
-                    progress: 0,
+                    progress: 50,
                     start: new Date("2023-03-06"),
                     end: new Date("2023-03-06"),
+                    isDisabled: true,
+                  },
+                  {
+                    id: "4",
+                    type: "milestone",
+                    name: "Livraison 2",
+                    progress: 50,
+                    start: new Date("2023-04-06"),
+                    end: new Date("2023-04-06"),
                     isDisabled: true,
                   },
                 ],

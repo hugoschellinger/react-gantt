@@ -33,7 +33,7 @@ export interface Task {
   displayOrder?: number;
 }
 
-export interface ITask extends Omit<Task,"project"|"dependencies">{
+export interface ITask extends Omit<Task,"project">{
   tasks?:ITask[];
 }
 
