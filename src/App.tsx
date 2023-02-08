@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Gantt from "./components/gantt/gantt";
+import {Gantt} from "./components/gantt/gantt";
 import { GanttApp } from "./components/gantt/ganttApp";
 import { ITask, Task, ViewMode } from "./types/public-types";
 
