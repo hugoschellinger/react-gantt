@@ -2,7 +2,7 @@
   "name": "@c-koya-tech/ckt-react-gantt",
   "description": "Le gantt react réutilisable et personnalisable de C-koya Tech",
   "author": "Hugo SCHELLINGER <hugo.schellinger@c-koya.tech",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": false,
   "main": "dist/index.html",
   "module": "dist/index.html",
