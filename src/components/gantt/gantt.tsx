@@ -12,7 +12,14 @@ interface GanttProps extends Omit<EventOption,"onExpanderClick">,DisplayOption {
 export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
 
 export default function Gantt(props: GanttProps): JSX.Element {
+
+  /**
+   * True quand les tacks sont bien configuré
+   */
   const [isMounted, setIsMounted] = useState(false);
+  /**
+   * Liste des id de tous les projets qui ont les task enfant caché
+   */
   const [hiddenProjectId, setHiddenProjectId] = useState<string[]>([]);
 
   useEffect(() => {
@@ -23,6 +30,9 @@ export default function Gantt(props: GanttProps): JSX.Element {
     setIsMounted(true);
   }, [props]);
 
+  /**
+   * @param {ITask} i Task sur laquelle on veut ouvrir ou fermer les tasks enfant
+   */
   const onExpanderClick = useCallback(
     (i: ITask) => {
       if (hiddenProjectId.includes(i.id)) {
@@ -34,6 +44,10 @@ export default function Gantt(props: GanttProps): JSX.Element {
     [hiddenProjectId]
   );
 
+  /**
+   * Transforme les tasks recu en props en tasks lisible par la librairie
+   * @returns {ITask[]}
+   */
   function castITasksToTasks(): ITask[] {
     let tasksArray: ITask[] = [];
 
@@ -53,6 +67,11 @@ export default function Gantt(props: GanttProps): JSX.Element {
     return tasksArray;
   }
 
+  /**
+   * Appelé lorsque la props configureFromTaskChildren est true, elle change la date de départ,de fin et la progression selon les tasks enfant
+   * @param {ITask} task Task parent que l'on doit configurer
+   * @returns {ITask} Retourne la task parent modifié
+   */
   function configureFromChildren(task: ITask): ITask {
     let bestStartDate: Date | null = null;
     let bestEndDate: Date | null = null;
@@ -88,6 +107,13 @@ export default function Gantt(props: GanttProps): JSX.Element {
     };
   }
 
+  /**
+   * Transforme des task enfants pour qu'elle soit lisible par la librairie
+   * @param {ITask} task Task à ajouter
+   * @param {number} index Index de la task dans la liste d'enfant de son parent
+   * @param {ITask} parentTask Task parent de la task à ajouter 
+   * @param {Task[]} tasksArray Retourne la liste des tasks que la librairie va lire pour afficher le gantt
+   */
   function flatTaskChildren(
     task: ITask,
     index: number,
@@ -109,6 +135,11 @@ export default function Gantt(props: GanttProps): JSX.Element {
     }
   }
 
+  /**
+   * 
+   * @param {ITask} task Task a vérifier
+   * @returns {ITask} Retourne la task vérifié et modifié si il le fallait 
+   */
   function verifyTypeTask(task: ITask): ITask {
     if (task.tasks !== undefined && task.tasks.length) {
       if (task.type !== "project") {
@@ -123,6 +154,9 @@ export default function Gantt(props: GanttProps): JSX.Element {
     return task;
   }
 
+  /**
+   * Affichage de du gantt
+   */
   const gantt = useCallback(
     () => (
       <GanttApp
@@ -141,7 +175,6 @@ export default function Gantt(props: GanttProps): JSX.Element {
 
   return (
     <>
-      <p>ouistiti</p>
       {gantt()}
     </>
   );
