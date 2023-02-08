@@ -30,21 +30,9 @@ export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
 
 export default function Gantt(props: GanttProps): JSX.Element {
   /**
-   * True quand les tasks sont bien configuré
-   */
-  const [isMounted, setIsMounted] = useState(false);
-  /**
    * Liste des id de tous les projets qui ont les task enfant caché
    */
   const [hiddenProjectId, setHiddenProjectId] = useState<string[]>([]);
-
-  useEffect(() => {
-    setIsMounted(false);
-  }, []);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, [props]);
 
   /**
    * @param {ITask} i Task sur laquelle on veut ouvrir ou fermer les tasks enfant
@@ -79,12 +67,12 @@ export default function Gantt(props: GanttProps): JSX.Element {
     return props.onClick!(castTaskToITask(task));
   }
 
-  function onDateChange(
+  const onDateChange= useCallback((
     task: Task,
     children: Task[]
-  ): void | boolean | Promise<void> | Promise<boolean> {
+  ): void | boolean | Promise<void> | Promise<boolean> =>{
     return props.onDateChange!(castTaskToITask(task, children));
-  }
+  },[]);
 
   function onDelete(
     task: ITask
@@ -240,9 +228,7 @@ export default function Gantt(props: GanttProps): JSX.Element {
         tasks={castITasksToTasks()}
       />
     );
-  }, [onExpanderClick]);
-
-  if (!isMounted) return <></>;
+  }, [onExpanderClick,props]);
 
   return <>{gantt()}</>;
 }
