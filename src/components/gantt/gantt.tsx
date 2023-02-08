@@ -1,52 +1,10 @@
 import { useState, useCallback } from "react";
-import { ITask } from "../../types/public-types";
+import { GanttProps, ITask } from "../../types/public-types";
 import { GanttApp } from "./ganttApp";
 import {
   Task,
-  StylingOption,
   EventOption,
-  DisplayOption,
 } from "../../types/public-types";
-
-interface GanttProps extends DisplayOption {
-  tasks: ITaskProps[];
-  configureFromTaskChildren?: boolean;
-  style?: Omit<StylingOption,"TooltipContent" | "TaskListHeader" | "TaskListTable">;
-  // TooltipContent?: React.FC<{
-  //   task: Task;
-  //   fontSize: string;
-  //   fontFamily: string;
-  // }>;
-  // TaskListHeader?: React.FC<{
-  //   headerHeight: number;
-  //   rowWidth: string;
-  //   fontFamily: string;
-  //   fontSize: string;
-  // }>;
-  // TaskListTable?: React.FC<{
-  //   rowHeight: number;
-  //   rowWidth: string;
-  //   fontFamily: string;
-  //   fontSize: string;
-  //   locale: string;
-  //   tasks: Task[];
-  //   selectedTaskId: string;
-  // }>
-  onSelect?: (task: ITask, isSelected: boolean) => void;
-  onDoubleClick?: (task: ITask) => void;
-  onClick?: (task: ITask) => void;
-  onDateChange?: (
-    task: ITask
-  ) => void | boolean | Promise<void> | Promise<boolean>;
-  onProgressChange?: (
-    task: ITask
-  ) => void | boolean | Promise<void> | Promise<boolean>;
-  onDelete?: (task: ITask) => void | boolean | Promise<void> | Promise<boolean>;
-  onExpanderClick?: (task: ITask) => void;
-  timeStep?: number;
-}
-
-export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
 
 export function Gantt(props: GanttProps): JSX.Element {
   /**
