@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { GanttAppProps, ITask } from "../../types/public-types";
+import { useState, useCallback } from "react";
+import { ITask } from "../../types/public-types";
 import { GanttApp } from "./ganttApp";
 import {
   Task,

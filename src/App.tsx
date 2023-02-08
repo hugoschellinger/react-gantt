@@ -71,7 +71,7 @@ function App() {
   //   },
   // ]);
 
-  const [tasks, setTasks] = useState<ITask>(
+  const [tasks, setTasks] = useState<ITask[]>([
     {
       id: "15",
       type: "task",
@@ -80,14 +80,24 @@ function App() {
       start: new Date("2023-03-06"),
       end: new Date("2023-04-06"),
       displayOrder: 1,
-    });
+    },
+    {
+      id: "16",
+      type: "task",
+      name: "ouistiti",
+      progress: 100,
+      start: new Date("2023-03-06"),
+      end: new Date("2023-04-06"),
+      displayOrder: 1,
+    }
+  ]);
 
   return (
     <>
       <Gantt
         viewMode={ViewMode.Week}
         locale="fr-FR"
-        tasks={[tasks]}
+        tasks={tasks}
       />
     </>
   );
