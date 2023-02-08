@@ -1,11 +1,12 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { GanttAppProps, ITask } from "../../types/public-types";
 import { GanttApp } from "./ganttApp";
-import { Task } from "../../types/public-types";
+import { Task, StylingOption, EventOption, DisplayOption } from "../../types/public-types";
 
-interface GanttProps extends Omit<GanttAppProps, "tasks" | "onExpanderClick"> {
+interface GanttProps extends Omit<EventOption,"onExpanderClick">,DisplayOption {
   tasks: ITaskProps[];
   configureFromTaskChildren?: boolean;
+  style?:StylingOption;
 }
 
 export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
@@ -126,6 +127,7 @@ export default function Gantt(props: GanttProps): JSX.Element {
     () => (
       <GanttApp
         {...props}
+        {...props.style}
         tasks={castITasksToTasks()}
         onExpanderClick={onExpanderClick}
         onDateChange={()=>{}}
