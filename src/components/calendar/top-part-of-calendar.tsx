@@ -18,6 +18,7 @@ export const TopPartOfCalendar: React.FC<TopPartOfCalendarProps> = ({
   xText,
   yText,
 }) => {
+  //TODO : Font calendar Month
   return (
     <g className="calendarTop">
       <line

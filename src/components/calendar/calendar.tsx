@@ -39,6 +39,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     for (let i = 0; i < dateSetup.dates.length; i++) {
       const date = dateSetup.dates[i];
       const bottomValue = date.getFullYear();
+      //TODO : font calendar Week
       bottomValues.push(
         <text
           key={date.getTime()}
@@ -84,6 +85,7 @@ export const Calendar: React.FC<CalendarProps> = ({
       const date = dateSetup.dates[i];
       // const bottomValue = getLocaleMonth(date, locale);
       const quarter = "Q" + Math.floor((date.getMonth() + 3) / 3);
+      //TODO : font calendar Week
       bottomValues.push(
         <text
           key={date.getTime()}
@@ -128,6 +130,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     for (let i = 0; i < dateSetup.dates.length; i++) {
       const date = dateSetup.dates[i];
       const bottomValue = getLocaleMonth(date, locale);
+      //TODO : font calendar Week
       bottomValues.push(
         <text
           key={bottomValue + date.getFullYear()}
@@ -181,6 +184,7 @@ export const Calendar: React.FC<CalendarProps> = ({
       // bottom
       const bottomValue = `W${getWeekNumberISO8601(date)}`;
 
+      //TODO : font calendar Week
       bottomValues.push(
         <text
           key={date.getTime()}
@@ -225,6 +229,7 @@ export const Calendar: React.FC<CalendarProps> = ({
         .getDate()
         .toString()}`;
 
+      //TODO : font calendar Week
       bottomValues.push(
         <text
           key={date.getTime()}
@@ -274,6 +279,7 @@ export const Calendar: React.FC<CalendarProps> = ({
         hour: "numeric",
       }).format(date);
 
+      //TODO : font calendar Week
       bottomValues.push(
         <text
           key={date.getTime()}
@@ -319,6 +325,7 @@ export const Calendar: React.FC<CalendarProps> = ({
         hour: "numeric",
       }).format(date);
 
+      //TODO : font calendar Week
       bottomValues.push(
         <text
           key={date.getTime()}

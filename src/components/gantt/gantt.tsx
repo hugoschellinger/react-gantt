@@ -1,20 +1,36 @@
 import { useEffect, useState, useCallback } from "react";
 import { GanttAppProps, ITask } from "../../types/public-types";
 import { GanttApp } from "./ganttApp";
-import { Task, StylingOption, EventOption, DisplayOption } from "../../types/public-types";
+import {
+  Task,
+  StylingOption,
+  EventOption,
+  DisplayOption,
+} from "../../types/public-types";
 
-interface GanttProps extends Omit<EventOption,"onExpanderClick">,DisplayOption {
+interface GanttProps extends DisplayOption {
   tasks: ITaskProps[];
   configureFromTaskChildren?: boolean;
-  style?:StylingOption;
+  style?: StylingOption;
+  onSelect?: (task: ITask, isSelected: boolean) => void;
+  onDoubleClick?: (task: ITask) => void;
+  onClick?: (task: ITask) => void;
+  onDateChange?: (
+    task: ITask
+  ) => void | boolean | Promise<void> | Promise<boolean>;
+  onProgressChange?: (
+    task: ITask
+  ) => void | boolean | Promise<void> | Promise<boolean>;
+  onDelete?: (task: ITask) => void | boolean | Promise<void> | Promise<boolean>;
+  onExpanderClick?: (task: ITask) => void;
+  timeStep?: number;
 }
 
 export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
 
 export default function Gantt(props: GanttProps): JSX.Element {
-
   /**
-   * True quand les tacks sont bien configuré
+   * True quand les tasks sont bien configuré
    */
   const [isMounted, setIsMounted] = useState(false);
   /**
@@ -34,7 +50,7 @@ export default function Gantt(props: GanttProps): JSX.Element {
    * @param {ITask} i Task sur laquelle on veut ouvrir ou fermer les tasks enfant
    */
   const onExpanderClick = useCallback(
-    (i: ITask) => {
+    (i: ITask): void => {
       if (hiddenProjectId.includes(i.id)) {
         setHiddenProjectId(hiddenProjectId.filter((h) => h !== i.id));
       } else {
@@ -44,6 +60,38 @@ export default function Gantt(props: GanttProps): JSX.Element {
     [hiddenProjectId]
   );
 
+  function onProgressChange(
+    task: Task,
+    children: Task[]
+  ): void | boolean | Promise<void> | Promise<boolean> {
+    return props.onProgressChange!(castTaskToITask(task, children));
+  }
+
+  function onSelect(task: Task, isSelected: boolean) {
+    return props.onSelect!(castTaskToITask(task), isSelected);
+  }
+
+  function onDoubleClick(task: Task) {
+    return props.onDoubleClick!(castTaskToITask(task));
+  }
+
+  function onClick(task: Task) {
+    return props.onClick!(castTaskToITask(task));
+  }
+
+  function onDateChange(
+    task: Task,
+    children: Task[]
+  ): void | boolean | Promise<void> | Promise<boolean> {
+    return props.onDateChange!(castTaskToITask(task, children));
+  }
+
+  function onDelete(
+    task: ITask
+  ): void | boolean | Promise<void> | Promise<boolean> {
+    return props.onDelete!(castTaskToITask(task));
+  }
+
   /**
    * Transforme les tasks recu en props en tasks lisible par la librairie
    * @returns {ITask[]}
@@ -52,19 +100,28 @@ export default function Gantt(props: GanttProps): JSX.Element {
     let tasksArray: ITask[] = [];
 
     props.tasks.forEach((parentTask) => {
-
       if (parentTask.tasks !== undefined && parentTask.tasks.length) {
         if (props.configureFromTaskChildren) {
           parentTask = configureFromChildren(parentTask);
         }
         parentTask.tasks!.map((task, index) =>
-        flatTaskChildren(task, index, parentTask, tasksArray)
+          flatTaskChildren(task, index, parentTask, tasksArray)
         );
       }
       tasksArray.push(verifyTypeTask(parentTask) as Task);
     });
 
     return tasksArray;
+  }
+
+  /**
+   * Cast une task venu de la librairie en ITask
+   * @param {Task} task Task à caster
+   * @param {Task[]} children (optionnel) Task enfant de la task à caster
+   * @returns {ITask} Retourne la task caster en ITask
+   */
+  function castTaskToITask(task: Task, children: Task[] = []): ITask {
+    return { ...task, tasks: children } as ITask;
   }
 
   /**
@@ -77,33 +134,36 @@ export default function Gantt(props: GanttProps): JSX.Element {
     let bestEndDate: Date | null = null;
     let averageProgress = 0;
 
-    if(task.tasks!==undefined && task.tasks.length){
+    if (task.tasks !== undefined && task.tasks.length) {
       task.tasks!.forEach((t) => {
-        if (t.tasks !== undefined && t.tasks.length) t = configureFromChildren(t);
-        if (
-          bestStartDate == null ||
-          bestStartDate > t.start
-        ) {
+        if (t.tasks !== undefined && t.tasks.length)
+          t = configureFromChildren(t);
+        if (bestStartDate == null || bestStartDate > t.start) {
           bestStartDate = t.start;
         }
         if (bestEndDate == null || bestEndDate < t.end) {
           bestEndDate = t.end;
         }
-        if(t.type!=="milestone"){
+        if (t.type !== "milestone") {
           averageProgress += t.progress;
         }
       });
-    }else{
+    } else {
       bestStartDate = task.start;
       bestEndDate = task.end;
       averageProgress = task.progress ?? 0;
-  }
+    }
 
     return {
       ...task,
       start: bestStartDate!,
       end: bestEndDate!,
-      progress: parseInt((averageProgress / task.tasks!.filter(t => t.type!=="milestone").length).toFixed(0)),
+      progress: parseInt(
+        (
+          averageProgress /
+          task.tasks!.filter((t) => t.type !== "milestone").length
+        ).toFixed(0)
+      ),
     };
   }
 
@@ -111,7 +171,7 @@ export default function Gantt(props: GanttProps): JSX.Element {
    * Transforme des task enfants pour qu'elle soit lisible par la librairie
    * @param {ITask} task Task à ajouter
    * @param {number} index Index de la task dans la liste d'enfant de son parent
-   * @param {ITask} parentTask Task parent de la task à ajouter 
+   * @param {ITask} parentTask Task parent de la task à ajouter
    * @param {Task[]} tasksArray Retourne la liste des tasks que la librairie va lire pour afficher le gantt
    */
   function flatTaskChildren(
@@ -120,13 +180,17 @@ export default function Gantt(props: GanttProps): JSX.Element {
     parentTask: ITask,
     tasksArray: Task[]
   ): void {
-    if (props.configureFromTaskChildren && (task.tasks !== undefined && task.tasks.length)) {
+    if (
+      props.configureFromTaskChildren &&
+      task.tasks !== undefined &&
+      task.tasks.length
+    ) {
       task = configureFromChildren(task);
     }
     tasksArray.push({
       ...verifyTypeTask(task),
       project: parentTask.id,
-      dependencies: task.dependencies ?? [(index+1).toString()],
+      dependencies: task.dependencies ?? [(index + 1).toString()],
     } as Task);
     if (task.tasks !== undefined && task.tasks.length) {
       task.tasks!.forEach((t, i) => {
@@ -136,9 +200,9 @@ export default function Gantt(props: GanttProps): JSX.Element {
   }
 
   /**
-   * 
+   *
    * @param {ITask} task Task a vérifier
-   * @returns {ITask} Retourne la task vérifié et modifié si il le fallait 
+   * @returns {ITask} Retourne la task vérifié et modifié si il le fallait
    */
   function verifyTypeTask(task: ITask): ITask {
     if (task.tasks !== undefined && task.tasks.length) {
@@ -157,25 +221,28 @@ export default function Gantt(props: GanttProps): JSX.Element {
   /**
    * Affichage de du gantt
    */
-  const gantt = useCallback(
-    () => (
+  const gantt = useCallback(() => {
+    let eventProps: EventOption = { onExpanderClick };
+    if (props.onProgressChange)
+      eventProps = { ...eventProps, onProgressChange };
+    if (props.onSelect) eventProps = { ...eventProps, onSelect };
+    if (props.onDoubleClick) eventProps = { ...eventProps, onDoubleClick };
+    if (props.onClick) eventProps = { ...eventProps, onClick };
+    if (props.onDateChange) eventProps = { ...eventProps, onDateChange };
+    if (props.onProgressChange)
+      eventProps = { ...eventProps, onProgressChange };
+    if (props.onDelete) eventProps = { ...eventProps, onDelete };
+    return (
       <GanttApp
         {...props}
         {...props.style}
+        {...eventProps}
         tasks={castITasksToTasks()}
-        onExpanderClick={onExpanderClick}
-        onDateChange={()=>{}}
       />
-    ),
-    [onExpanderClick]
-  );
-
+    );
+  }, [onExpanderClick]);
 
   if (!isMounted) return <></>;
 
-  return (
-    <>
-      {gantt()}
-    </>
-  );
+  return <>{gantt()}</>;
 }
