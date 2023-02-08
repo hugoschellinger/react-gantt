@@ -1,8 +1,11 @@
 import { useState } from "react";
 import "./App.css";
-import {Gantt} from "./components/gantt/gantt";
-import { GanttApp } from "./components/gantt/ganttApp";
-import { ITask, Task, ViewMode } from "./types/public-types";
+import { Gantt } from "./components/gantt/gantt";
+import { ITask, ViewMode } from "./types/public-types";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
 function App() {
   // const [tasks, setTasks] = useState<ITask[]>([
@@ -89,18 +92,26 @@ function App() {
       start: new Date("2023-03-06"),
       end: new Date("2023-04-06"),
       displayOrder: 1,
-    }
+    },
   ]);
 
   return (
     <>
-      <Gantt
-        viewMode={ViewMode.Week}
-        locale="fr-FR"
-        tasks={tasks}
-      />
+      <Gantt viewMode={ViewMode.Week} locale="fr-FR" tasks={tasks} />
     </>
   );
 }
 
-export default App;
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
