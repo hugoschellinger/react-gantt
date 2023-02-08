@@ -11,7 +11,27 @@ import {
 interface GanttProps extends DisplayOption {
   tasks: ITaskProps[];
   configureFromTaskChildren?: boolean;
-  style?: StylingOption;
+  style?: Omit<StylingOption,"TooltipContent" | "TaskListHeader" | "TaskListTable">;
+  // TooltipContent?: React.FC<{
+  //   task: Task;
+  //   fontSize: string;
+  //   fontFamily: string;
+  // }>;
+  // TaskListHeader?: React.FC<{
+  //   headerHeight: number;
+  //   rowWidth: string;
+  //   fontFamily: string;
+  //   fontSize: string;
+  // }>;
+  // TaskListTable?: React.FC<{
+  //   rowHeight: number;
+  //   rowWidth: string;
+  //   fontFamily: string;
+  //   fontSize: string;
+  //   locale: string;
+  //   tasks: Task[];
+  //   selectedTaskId: string;
+  // }>
   onSelect?: (task: ITask, isSelected: boolean) => void;
   onDoubleClick?: (task: ITask) => void;
   onClick?: (task: ITask) => void;
@@ -28,7 +48,7 @@ interface GanttProps extends DisplayOption {
 
 export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
 
-export default function Gantt(props: GanttProps): JSX.Element {
+export function Gantt(props: GanttProps): JSX.Element {
   /**
    * Liste des id de tous les projets qui ont les task enfant caché
    */
