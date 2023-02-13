@@ -144,7 +144,6 @@ export interface StylingOption {
   }>;
 }
 
-export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
 export interface GanttProps extends DisplayOption {
   tasks: ITaskProps[];
   configureFromTaskChildren?: boolean;
@@ -182,6 +181,8 @@ export interface GanttProps extends DisplayOption {
   onExpanderClick?: (task: ITask) => void;
   timeStep?: number;
 }
+
+export interface ITaskProps extends Omit<ITask, "hideChildren"> {}
 
 export interface GanttAppProps extends EventOption, DisplayOption, StylingOption {
   tasks: Task[];
