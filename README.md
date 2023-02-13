@@ -13,7 +13,7 @@ Un simple couche a été développé pour facilité l'utilisation de la librairi
 ## Install
 
 ```
-npm install ckt-react-gantt
+npm install @c-koya-tech/ckt-react-gantt
 ```
 
 ## How to use it
