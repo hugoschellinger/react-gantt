@@ -1,32 +1,7 @@
 {
-  "name": "@c-koya-tech/ckt-react-gantt",
-  "description": "Le gantt react réutilisable et personnalisable de C-koya Tech",
-  "author": "Hugo SCHELLINGER <hugo.schellinger@c-koya.tech",
-  "version": "0.0.6",
-  "private": false,
-  "main": "dist/index.html",
-  "module": "dist/index.html",
-  "files": [
-    "dist",
-    "README.md"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hugoschellinger/react-gantt.git"
-  },
-  "bugs": {
-    "url": "https://github.com/hugoschellinger/react-gantt/issues"
-  },
-  "homepage": "https://github.com/hugoschellinger/react-gantt#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "babel --out-dir dist --copy-files",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+  "name": "react-gantt",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -59,8 +34,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0"
   }
 }
