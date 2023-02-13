@@ -24,7 +24,7 @@ import { HorizontalScroll } from "../other/horizontal-scroll";
 import { removeHiddenTasks, sortTasks } from "../../helpers/other-helper";
 import styles from "./gantt.module.css";
 
-export const GanttApp: React.FunctionComponent<GanttAppProps> = ({
+export function GanttApp({
   tasks,
   headerHeight = 50,
   columnWidth = 60,
@@ -65,7 +65,7 @@ export const GanttApp: React.FunctionComponent<GanttAppProps> = ({
   onDelete,
   onSelect,
   onExpanderClick,
-}) => {
+}:GanttAppProps):JSX.Element{
   const wrapperRef = useRef<HTMLDivElement>(null);
   const taskListRef = useRef<HTMLDivElement>(null);
   const [dateSetup, setDateSetup] = useState<DateSetup>(() => {
