@@ -1,8 +1,6 @@
-import { useState } from "react";
+import React,{ useState } from "react";
+import { Gantt, ITask, ViewMode } from "../../dist";
 import "./App.css";
-import {Gantt} from "./components/gantt/gantt";
-import { GanttApp } from "./components/gantt/ganttApp";
-import { ITask, Task, ViewMode } from "./types/public-types";
 
 function App() {
   // const [tasks, setTasks] = useState<ITask[]>([
@@ -93,13 +91,11 @@ function App() {
   ]);
 
   return (
-    <>
       <Gantt
         viewMode={ViewMode.Week}
         locale="fr-FR"
         tasks={tasks}
       />
-    </>
   );
 }
 

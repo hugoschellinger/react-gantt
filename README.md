@@ -159,4 +159,4 @@ All of this props must be put in `style props`
 
 ## License
 
-[MIT](https://oss.ninja/mit/jaredpalmer/)
+MIT © [Hugoslr <hugo.schellinger@c-koya.tech>](https://github.com/Hugoslr <hugo.schellinger@c-koya.tech>)
