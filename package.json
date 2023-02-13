@@ -1,6 +1,6 @@
 {
   "name": "ckt-react-gantt",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "description": "Le gantt react réutilisable et personnalisable de C-koya Tech",
   "author": "Hugo SCHELLINGER <hugo.schellinger@c-koya.tech>",
   "license": "MIT",
